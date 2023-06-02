@@ -1,7 +1,6 @@
 const faceapi = require("face-api.js");
 const canvas = require("canvas");
 const fs = require("fs");
-const jimp = require("jimp");
 
 const responseFormatter = require("../helpers/responseFormatter");
 const { Employee } = require("../models");
