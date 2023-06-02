@@ -19,8 +19,6 @@
     "express-validator": "^7.0.1",
     "face-api.js": "^0.22.2",
     "googleapis": "^118.0.0",
-    "jimp": "^0.22.8",
-    "joi": "^17.9.2",
     "jsonwebtoken": "^9.0.0",
     "moment": "^2.29.4",
     "morgan": "~1.9.1",
