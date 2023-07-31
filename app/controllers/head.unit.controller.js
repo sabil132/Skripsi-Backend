@@ -3,34 +3,34 @@ const sequelize = require("sequelize");
 const responseFormatter = require("../helpers/responseFormatter");
 const { Head_Unit } = require("../models");
 
-class HeadUnitController extends Controller
+class HeadUnitController
 {
-  static getAllHeadUnits = async (req, res) =>
-  {
-    try {
-      const headUnits = await Head_Unit.findAll();
+  // static getAllHeadUnits = async (req, res) =>
+  // {
+  //   try {
+  //     const headUnits = await Head_Unit.findAll();
 
-      return res.status(200).json(responseFormatter.success(headUnits, "Head units retrieved", res.statusCode));
-    } catch (error) {
-      return res.status(500).json(responseFormatter.error(null, error.message, res.statusCode));
-    }
-  }
+  //     return res.status(200).json(responseFormatter.success(headUnits, "Head units retrieved", res.statusCode));
+  //   } catch (error) {
+  //     return res.status(500).json(responseFormatter.error(null, error.message, res.statusCode));
+  //   }
+  // }
 
-  static getHeadUnitById = async (req, res) =>
-  {
-    try {
-      const { id } = req.params;
-      const headUnit = await Head_Unit.findByPk(id);
+  // static getHeadUnitById = async (req, res) =>
+  // {
+  //   try {
+  //     const { id } = req.params;
+  //     const headUnit = await Head_Unit.findByPk(id);
 
-      if (!headUnit) {
-        return res.status(404).json(responseFormatter.error(null, "Head unit not found", res.statusCode));
-      }
+  //     if (!headUnit) {
+  //       return res.status(404).json(responseFormatter.error(null, "Head unit not found", res.statusCode));
+  //     }
 
-      return res.status(200).json(responseFormatter.success(headUnit, "Head unit retrieved", res.statusCode));
-    } catch (error) {
-      return res.status(500).json(responseFormatter.error(null, error.message, res.statusCode));
-    }
-  }
+  //     return res.status(200).json(responseFormatter.success(headUnit, "Head unit retrieved", res.statusCode));
+  //   } catch (error) {
+  //     return res.status(500).json(responseFormatter.error(null, error.message, res.statusCode));
+  //   }
+  // }
 
   static createHeadUnit = async (req, res) =>
   {
@@ -61,7 +61,7 @@ class HeadUnitController extends Controller
   static updateHeadUnit = async (req, res) => {
     try {
       const { id } = req.params;
-      const { unit_id, employee_id } = req.body;
+      const { employee_id } = req.body;
 
       const headUnit = await Head_Unit.findByPk(id);
 
@@ -80,7 +80,6 @@ class HeadUnitController extends Controller
       }
 
       await Head_Unit.update({
-        unit_id: unit_id,
         employee_id: employee_id,
       }, {
         where: {

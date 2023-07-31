@@ -8,7 +8,7 @@ const { Presence, Detail_Presence_Clock_In, Detail_Presence_Clock_Out, Employee,
 class PresenceController {
   static getAllPresenceGroupByUserId = async (req, res) => {
     try {
-      const month = req.body.month
+      const month = req.query.month
 
       const presence = await Presence.findAll({
         include: [
@@ -75,11 +75,11 @@ class PresenceController {
         include: [
           {
             model: Detail_Presence_Clock_In,
-            attributes: ['clock_in', 'note', 'photo', 'latitude', 'longitude']
+            attributes: ['clock_in', 'photo', 'latitude', 'longitude']
           },
           {
             model: Detail_Presence_Clock_Out,
-            attributes: ['clock_out', 'note', 'photo', 'latitude', 'longitude']
+            attributes: ['clock_out', 'photo', 'latitude', 'longitude']
           },
         ],
         where: [
@@ -101,7 +101,7 @@ class PresenceController {
           return {
             id: item.id,
             date: item.date,
-            clock_in: moment(item.Detail_Presence_Clock_In.clock_in).format('HH:mm'),
+            clock_in: Detail_Presence_Clock_In ? moment(item.Detail_Presence_Clock_In.clock_in).format('HH:mm') : null,
             clock_out: item.Detail_Presence_Clock_Out? moment(item.Detail_Presence_Clock_Out.clock_out).format('HH:mm') : null,
             working_hours: item.working_hours,
           }
@@ -122,11 +122,11 @@ class PresenceController {
         include: [
           {
             model: Detail_Presence_Clock_In,
-            attributes: ['clock_in', 'note', 'photo', 'latitude', 'longitude']
+            attributes: ['clock_in', 'photo', 'latitude', 'longitude']
           },
           {
             model: Detail_Presence_Clock_Out,
-            attributes: ['clock_out', 'note', 'photo', 'latitude', 'longitude']
+            attributes: ['clock_out', 'photo', 'latitude', 'longitude']
           },
         ],
         where: {
@@ -144,14 +144,12 @@ class PresenceController {
         working_hours: presence.working_hours,
         presence_in: {
           clock_in: moment(presence.Detail_Presence_Clock_In.clock_in).format('HH:mm'),
-          note: presence.Detail_Presence_Clock_In.note,
           photo: presence.Detail_Presence_Clock_In.photo,
           latitude: presence.Detail_Presence_Clock_In.latitude,
           longitude: presence.Detail_Presence_Clock_In.longitude,
         },
         presence_out:  {
           clock_out: presence.Detail_Presence_Clock_Out ? moment(presence.Detail_Presence_Clock_Out.clock_out).format('HH:mm') : null,
-          note: presence.Detail_Presence_Clock_Out ? presence.Detail_Presence_Clock_Out.note : null,
           photo: presence.Detail_Presence_Clock_Out ? presence.Detail_Presence_Clock_Out.photo : null,
           latitude: presence.Detail_Presence_Clock_Out ? presence.Detail_Presence_Clock_Out.latitude : null,
           longitude: presence.Detail_Presence_Clock_Out ? presence.Detail_Presence_Clock_Out.longitude : null,
@@ -172,11 +170,11 @@ class PresenceController {
         include: [
           {
             model: Detail_Presence_Clock_In,
-            attributes: ['clock_in', 'note', 'photo', 'latitude', 'longitude']
+            attributes: ['clock_in', 'photo', 'latitude', 'longitude']
           },
           {
             model: Detail_Presence_Clock_Out,
-            attributes: ['clock_out', 'note', 'photo', 'latitude', 'longitude']
+            attributes: ['clock_out', 'photo', 'latitude', 'longitude']
           },
         ],
         where: {
@@ -195,14 +193,12 @@ class PresenceController {
         working_hours: existUserPresence.working_hours,
         presence_in: {
           clock_in: moment(existUserPresence.Detail_Presence_Clock_In.clock_in).format('HH:mm'),
-          note: existUserPresence.Detail_Presence_Clock_In.note,
           photo: existUserPresence.Detail_Presence_Clock_In.photo,
           latitude: existUserPresence.Detail_Presence_Clock_In.latitude,
           longitude: existUserPresence.Detail_Presence_Clock_In.longitude,
         },
         presence_out:  {
           clock_out: existUserPresence.Detail_Presence_Clock_Out ? moment(existUserPresence.Detail_Presence_Clock_Out.clock_out).format('HH:mm') : null,
-          note: existUserPresence.Detail_Presence_Clock_Out ? existUserPresence.Detail_Presence_Clock_Out.note : null,
           photo: existUserPresence.Detail_Presence_Clock_Out ? existUserPresence.Detail_Presence_Clock_Out.photo : null,
           latitude: existUserPresence.Detail_Presence_Clock_Out ? existUserPresence.Detail_Presence_Clock_Out.latitude : null,
           longitude: existUserPresence.Detail_Presence_Clock_Out ?existUserPresence.Detail_Presence_Clock_Out.longitude : null,
@@ -218,7 +214,7 @@ class PresenceController {
 
   static createPresence = async (req, res) => {
     try {
-      const { employee_id, note, latitude, longitude } = req.body;
+      const { employee_id, latitude, longitude } = req.body;
 
       const presence = await Presence.create({
         date: moment().format('YYYY-MM-DD'),
@@ -236,7 +232,6 @@ class PresenceController {
 
         presence_in = await Detail_Presence_Clock_In.create({
           clock_in: moment(),
-          note: note,
           photo: url,
           latitude: latitude,
           longitude: longitude,
@@ -248,7 +243,6 @@ class PresenceController {
         id: presence.id,
         date: presence.date,
         clock_in: moment(presence_in.clock_in).format('HH:mm:ss'),
-        note: presence_in.note,
         photo: presence_in.photo,
         latitude: presence_in.latitude,
         longitude: presence_in.longitude,
@@ -262,7 +256,7 @@ class PresenceController {
 
   static updatePresence = async (req, res) => {
     try {
-      const {note, latitude, longitude } = req.body;
+      const {latitude, longitude } = req.body;
       const { id } = req.params;
 
       // check presence exist
@@ -303,7 +297,6 @@ class PresenceController {
       // insert presence out
       const presence_out = await Detail_Presence_Clock_Out.create({
         clock_out: clock_out,
-        note: note,
         photo: url,
         latitude: latitude,
         longitude: longitude,
@@ -314,7 +307,6 @@ class PresenceController {
         id: presenceExist.id,
         date: presenceExist.date,
         clock_out: moment(presence_out.clock_out).format('HH:mm:ss'),
-        note: presence_out.note,
         photo: presence_out.photo,
         latitude: presence_out.latitude,
         longitude: presence_out.longitude,

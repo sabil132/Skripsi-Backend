@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Detail_Presence_Clock_Out extends Model {
+  class request_update_photo_profile extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,22 +11,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.Presence, {
-        foreignKey: {
-          name: 'id'
-        }
-      });
     }
   }
-  Detail_Presence_Clock_Out.init({
-    clock_out: DataTypes.DATE,
+  request_update_photo_profile.init({
     photo: DataTypes.STRING,
-    latitude: DataTypes.DOUBLE,
-    longitude: DataTypes.DOUBLE,
-    presence_id: DataTypes.INTEGER
+    is_approved: DataTypes.BOOLEAN,
+    employee_id: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'Detail_Presence_Clock_Out',
+    modelName: 'request_update_photo_profile',
   });
-  return Detail_Presence_Clock_Out;
+  return request_update_photo_profile;
 };

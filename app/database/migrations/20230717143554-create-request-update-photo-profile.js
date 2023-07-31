@@ -2,26 +2,20 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Detail_Presence_Clock_Ins', {
+    await queryInterface.createTable('request_update_photo_profiles', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      clock_in: {
-        type: Sequelize.DATE
-      },
       photo: {
         type: Sequelize.STRING
       },
-      latitude: {
-        type: Sequelize.DOUBLE
+      is_approved: {
+        type: Sequelize.BOOLEAN
       },
-      longitude: {
-        type: Sequelize.DOUBLE
-      },
-      presence_id: {
+      employee_id: {
         type: Sequelize.INTEGER
       },
       createdAt: {
@@ -35,6 +29,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Detail_Presence_Clock_Ins');
+    await queryInterface.dropTable('request_update_photo_profiles');
   }
 };

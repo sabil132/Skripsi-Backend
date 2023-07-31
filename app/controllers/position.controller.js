@@ -1,15 +1,21 @@
 const sequelize = require("sequelize");
 
 const responseFormatter = require("../helpers/responseFormatter");
-const { Position } = require("../models");
+const { Position, Employee } = require("../models");
 
 class PositionController {
   static getAllPosition = async (req, res) => {
     try {
-      const positions = await Position.findAll();
+      const positions = await Position.findAll({
+        where: sequelize.where(
+          sequelize.fn('lower', sequelize.col('Position.name')),{[sequelize.Op.like]: `%${req.query.name.toLowerCase() || ''}%`}
+        )
+      });
 
+      
       return res.status(200).json(responseFormatter.success(positions, "Position found", res.statusCode));
     } catch (error) {
+      console.log(error);
       return res.status(500).json(responseFormatter.error(null, error.message, res.statusCode));
     }
   }
@@ -102,6 +108,16 @@ class PositionController {
         return res.status(404).json(responseFormatter.error(null, "Position not found", res.statusCode));
       }
 
+      const positionIsUser = await Employee.findOne({
+        where: {
+          position_id: id
+        }
+      });
+
+      if (positionIsUser) {
+        return res.status(409).json(responseFormatter.error(null, "Position already used", res.statusCode));
+      }
+      
       await Position.destroy({
         where: {
           id: id

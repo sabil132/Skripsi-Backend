@@ -50,7 +50,8 @@ module.exports = (sequelize, DataTypes) => {
     is_active: DataTypes.BOOLEAN,
     role: DataTypes.ENUM('Administrator', 'Staff'),
     position_id: DataTypes.INTEGER,
-    unit_id: DataTypes.INTEGER
+    unit_id: DataTypes.INTEGER,
+    deletedAt: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'Employee',

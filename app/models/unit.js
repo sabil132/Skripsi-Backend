@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Employee, {
         foreignKey: {
           name: 'id'
-        }
+        },
       })
 
       this.hasOne(models.Head_Unit, {

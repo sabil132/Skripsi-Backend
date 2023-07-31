@@ -2,6 +2,7 @@ const router = require("express").Router();
 
 const { upload } = require("../../app/middlewares");
 const PresenceController = require("../../app/controllers/presence.controller");
+const { authJWT } = require("../../app/middlewares");
 
 router.get("/", PresenceController.getAllPresenceGroupByUserId)
 router.get("/now/:userId", PresenceController.getPresenceByUserIdAndDate)

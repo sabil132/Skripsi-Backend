@@ -20,7 +20,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   Detail_Presence_Clock_In.init({
     clock_in: DataTypes.DATE,
-    note: DataTypes.STRING,
     photo: DataTypes.STRING,
     latitude: DataTypes.DOUBLE,
     longitude: DataTypes.DOUBLE,

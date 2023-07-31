@@ -1,12 +1,13 @@
 const router = require("express").Router();
 
 const PositionController = require("../../app/controllers/position.controller");
+const { authJWT } = require("../../app/middlewares");
 
-router.get("/", PositionController.getAllPosition)
-router.get("/:id", PositionController.getPositionById)
+router.get("/", authJWT, PositionController.getAllPosition)
+router.get("/:id", authJWT, PositionController.getPositionById)
 router.post("/", PositionController.createPosition)
-router.patch("/:id", PositionController.updatePosition)
-router.delete("/:id", PositionController.deletePosition)
+router.patch("/:id", authJWT, PositionController.updatePosition)
+router.delete("/:id", authJWT, PositionController.deletePosition)
 
 
 // export router

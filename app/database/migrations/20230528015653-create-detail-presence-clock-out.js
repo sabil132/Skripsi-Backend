@@ -12,9 +12,6 @@ module.exports = {
       clock_out: {
         type: Sequelize.DATE
       },
-      note: {
-        type: Sequelize.STRING
-      },
       photo: {
         type: Sequelize.STRING
       },

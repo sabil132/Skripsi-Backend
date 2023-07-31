@@ -19,7 +19,10 @@ class UnitController {
               }
             ]
           }
-        ]
+        ],
+        where: sequelize.where(
+          sequelize.fn('lower', sequelize.col('Unit.name')),{[sequelize.Op.like]: `%${req.query.name.toLowerCase() || ''}%`}
+        )
       });
 
       return res.status(200).json(responseFormatter.success(unit, "Unit found", res.statusCode));
@@ -76,6 +79,7 @@ class UnitController {
 
       return res.status(201).json(responseFormatter.success(unit, "Unit created", res.statusCode));
     } catch (error) {
+      console.log(error);
       return res.status(500).json(responseFormatter.error(null, error.message, res.statusCode));
     }
   }
@@ -127,6 +131,16 @@ class UnitController {
 
       if (!unitExist) {
         return res.status(404).json(responseFormatter.error(null, "Unit not found", res.statusCode));
+      }
+
+      const unitIsUsed = await Employee.findOne({
+        where: {
+          unit_id: id
+        }
+      });
+
+      if (unitIsUsed) {
+        return res.status(409).json(responseFormatter.error(null, "Unit already used", res.statusCode));
       }
 
       await Unit.destroy({
