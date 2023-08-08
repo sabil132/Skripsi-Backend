@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/f4389631-f11f-4ad3-b2dc-101d833c4307/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/Presence-API",
+    "appService.deploySubpath": "."
+}
